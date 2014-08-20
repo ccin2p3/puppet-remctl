@@ -104,22 +104,16 @@ describe 'remctl::server::command', :type => :define do
 
                     it 'should have concat object' do
                         should contain_concat("#{confdir}/kadmin").with({
-                            :ensure     => 'present',
+                            # Note(remi): remove ensure parameter to be compliant with puppetlabs-concat 1.0.4
+                            #:ensure     => 'present',
+                            :warn       => true,
                             :mode       => default_file_mode,
                             :owner      => default_user,
                             :group      => default_group,
                         })
                     end
 
-                    it 'should have puppet header fragment' do
-                        should contain_concat__fragment('kadmin_puppet_header').with({
-                            :target         => "#{confdir}/kadmin",
-                            :order          => '01',
-                            :content        => /^#.+?DO NOT EDIT/m
-                        })
-                    end
-
-                    it 'should have command fragment' do
+                    it do
                         should contain_concat__fragment('kadmin_change_pw').with({
                             :ensure         => 'present',
                             :target         => "#{confdir}/kadmin",
@@ -183,8 +177,14 @@ describe 'remctl::server::command', :type => :define do
                         :acls           => ['princ:goodguy@IN2P3.FR', 'unixgroup:goodguys']
                     } end
 
-                    it 'should have acl file present' do
-                        should contain_concat("#{confdir}/kadmin").with_ensure('present')
+                    it do
+                        # Note(remi): remove ensure parameter to be compliant with puppetlabs-concat 1.0.4
+                        #should contain_concat("#{confdir}/kadmin").with_ensure('present')
+                        should contain_concat("#{confdir}/kadmin").with_warn(true)
+                    end
+
+                    it do
+                        should contain_concat__fragment('kadmin_change_pw').with_ensure('present')
                     end
 
                 end # context with ensure present
@@ -198,11 +198,12 @@ describe 'remctl::server::command', :type => :define do
                         :acls           => ['princ:goodguy@IN2P3.FR', 'unixgroup:goodguys']
                     } end
 
-                    it 'should have acl file absent' do
-                        should contain_concat("#{confdir}/kadmin").with({
-                            :ensure     => 'present',
-                            :force      => false
-                        })
+                    it do
+                        should contain_concat("#{confdir}/kadmin").with_warn(true)
+                    end
+
+                    it do
+                        should contain_concat__fragment('kadmin_change_pw').with_ensure('absent')
                     end
 
                 end # context with ensure absent
@@ -234,8 +235,13 @@ describe 'remctl::server::command', :type => :define do
                     :acls           => ['princ:goodguy@IN2P3.FR', 'unixgroup:goodguys']
                 } end
 
+                it do
+                    # Note(remi): remove ensure parameter to be compliant with puppetlabs-concat 1.0.4
+                    #should contain_concat("#{confdir}/kadmin").with_ensure('present')
+                    should contain_concat("#{confdir}/kadmin").with_warn(true)
+                end
+
                 it 'should have all fragments' do
-                    should contain_concat("#{confdir}/kadmin").with_ensure('present')
                     should contain_concat__fragment('kadmin_other').with_ensure('absent')
                     should contain_concat__fragment('kadmin_change_pw').with_ensure('present')
                 end

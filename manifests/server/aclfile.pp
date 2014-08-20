@@ -1,3 +1,4 @@
+#
 define remctl::server::aclfile (
     $ensure         = 'present',
     $acldir         = $remctl::server::acldir,

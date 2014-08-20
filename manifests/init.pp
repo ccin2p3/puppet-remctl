@@ -2,7 +2,7 @@
 # Base remctl class
 #
 class remctl (
-) inherits params {
+) inherits ::remctl::params {
 
 }
 

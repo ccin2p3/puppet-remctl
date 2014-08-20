@@ -12,6 +12,8 @@
  'Stage[setup_app]', 'Stage[setup_infra]',
  'Remctl::Server::Aclfile[rspec-aclfile]',
  'Class[Concat::Setup]', 'Exec[concat_/etc/remctl/conf.d/kadmin]',
+ 'Concat::Fragment[kadmin_puppet_header]',
+
  'File[/etc/remctl/conf.d/kadmin]',
  'File[/tmp/_etc_remctl_conf.d_kadmin/fragments.concat.out]',
  'File[/tmp/_etc_remctl_conf.d_kadmin/fragments.concat]',
@@ -21,6 +23,7 @@
  'File[/tmp/_etc_remctl_conf.d_kadmin/fragments]',
  'File[/tmp/_etc_remctl_conf.d_kadmin]',
  'File[/tmp/bin/concatfragments.sh]',
+ 'File[/usr/local/bin/concatfragments.sh]',
  'File[/tmp/bin]',
  'File[/tmp]',
  'Remctl::Server::Command[10-kadmin_changepw]',

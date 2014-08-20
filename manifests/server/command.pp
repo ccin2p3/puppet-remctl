@@ -1,3 +1,4 @@
+#
 define remctl::server::command (
     $command,
     $subcommand,
@@ -27,15 +28,22 @@ define remctl::server::command (
 
     if ! defined(Concat[$cmdfile]) {
         concat { $cmdfile:
-            ensure  => present,
+            # Note(remi):
+            # *ensure* is not supported in puppetlabs-concat 1.0.4
+            # This conflicts with the Modulefile that says that puppet-remctl
+            # is compatible with all 1.x versions.
+            # The easiest way to fix this without introducing backward compatibility
+            # problems is to remove the *ensure* parameter from the Concat type for now.
+            #ensure  => present,
             mode    => '0440',
             force   => false,
             owner   => $remctl::server::user,
-            group   => $remctl::server::group
+            group   => $remctl::server::group,
+            warn    => true
         }
 
         concat::fragment { "${command}_puppet_header":
-            ensure          => $ensure,
+            ensure          => present,
             target          => $cmdfile,
             order           => '01',
             content         => "# This file is being maintained by Puppet.\n# DO NOT EDIT\n"

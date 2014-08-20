@@ -1,3 +1,7 @@
+#### 2014-08-20 - Remi Ferrand <puppet@cc.in2p3.fr> - 2.1.1
+##### Bugfixes
+* Fixes inexistent parameter `ensure` on type `concat` introduced in puppetlabs-concat v1.1.0. This module is meant to support puppetlabs-concat v1.x and versions prior to v1.1.0 do not have parameter `ensure` in ̀̀`concat` type. Until puppetlabs officially supports puppetlabs-concat v1.1.x, there is actually no way to completely remove a command file created with this remctl module. The command will no longer be available through remctl but an empty file will remain (only with puppet headers).
+
 #### 2014-05-23 - Remi Ferrand <puppet@cc.in2p3.fr> - 2.1.0
 ##### Bugfixes
 * Fixes random sort changes in command files when using multiple `options` was specified (https://github.com/ccin2p3/puppet-remctl/issues/11).

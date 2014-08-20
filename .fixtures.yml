@@ -1,11 +1,17 @@
 fixtures:
+  forge_modules:
+    # Use forge version of puppetlabs-concat that is supported by puppetlabs
+    # Currently, v1.1.0 is not supported by puppetlabs
+    concat: 
+        repo: "puppetlabs/concat"
+        ref : "1.0.4"
   repositories:
     stdlib:
       repo: "https://github.com/puppetlabs/puppetlabs-stdlib.git"
     xinetd:
       repo: "https://github.com/puppetlabs/puppetlabs-xinetd.git"
-    concat:
-      repo: "https://github.com/puppetlabs/puppetlabs-concat.git"
+#    concat:
+#      repo: "https://github.com/puppetlabs/puppetlabs-concat.git"
     # Use latest version of rspec puppet for coverage
     rspec-puppet:
             repo: "https://github.com/rodjek/rspec-puppet.git"

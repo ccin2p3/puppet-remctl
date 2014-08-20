@@ -18,7 +18,7 @@ class remctl::server (
     $package_name       = $remctl::params::server_package_name,
 
 
-) inherits params {
+) inherits ::remctl::params {
 
     require stdlib
     include xinetd
