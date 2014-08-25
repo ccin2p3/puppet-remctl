@@ -55,6 +55,11 @@ This module adheres to [Semantic versioning](http://semver.org/) and it's versio
 * xinetd service
 * listened-to ports
 
+###Requirements
+
+* [puppetlabs-stdlib](https://github.com/puppetlabs/puppetlabs-stdlib.git)
+* [puppetlabs-xinetd](https://github.com/puppetlabs/puppetlabs-xinetd.git)
+
 ###Beginning with remctl    
 
 To install remctl client
