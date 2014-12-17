@@ -17,7 +17,8 @@ class remctl::server (
 
     $package_name       = $remctl::params::server_package_name,
 
-
+    $commands		= {},
+    $aclfiles		= {}
 ) inherits ::remctl::params {
 
     require stdlib
@@ -199,6 +200,9 @@ class remctl::server (
         no_access       => $_no_access,
         bind            => $bind
     }
+
+    create_resources('::remctl::server::command', $commands, {})
+    create_resources('::remctl::server::aclfile', $aclfiles, {})
 }
 
 # vim: tabstop=4 shiftwidth=4 softtabstop=4
