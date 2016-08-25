@@ -119,7 +119,6 @@ describe 'remctl::server::command', :type => :define do
                         should contain_concat__fragment('kadmin_change_pw').with({
                             :ensure         => 'present',
                             :target         => "#{confdir}/kadmin",
-                            :order          => '02',
                             :content        => %r'^kadmin\s+change_pw\s+\\\n/usr/kerberos/sbin/kadmin\s+\\\n^princ:goodguy@IN2P3.FR\s+unixgroup:goodguys$'m
                         })
                     end
