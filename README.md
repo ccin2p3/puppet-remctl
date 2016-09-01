@@ -347,3 +347,9 @@ Array of acls as desribed in `remctld(8)` `acl` section.
 This module currently only works on `RedHat` and `Debian` os families and expects that the `remctl*` packages are available with your current repository configuration.
 
 All xinetd options were not exposed through the `remctl::server` class. If you need a specific xinetd option, please file a bug report and we'll add it.
+
+## Contributing
+
+Found a bug or simply have a new idea / new feature ? External contributions are welcome.
+
+Please read the [contribution guide](CONTRIBUTING.md) to see how to contribute.
