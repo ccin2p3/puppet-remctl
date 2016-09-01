@@ -10,7 +10,8 @@ group :development, :test do
     gem 'rspec', '< 3.0.0',        :require => false
     gem 'rake', '10.1.1',          :require => false
     # Latest rspec-puppet is required for coverage
-    gem 'rspec-puppet',            :git => 'https://github.com/rodjek/rspec-puppet.git'
+    #gem 'rspec-puppet',            :git => 'https://github.com/rodjek/rspec-puppet.git'
+    gem 'rspec-puppet',            :require => false
     gem 'puppetlabs_spec_helper',  :require => false
     gem 'puppet-lint',             :require => false
 
