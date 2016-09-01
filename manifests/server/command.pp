@@ -34,7 +34,7 @@ define remctl::server::command (
             # is compatible with all 1.x versions.
             # The easiest way to fix this without introducing backward compatibility
             # problems is to remove the *ensure* parameter from the Concat type for now.
-            #ensure  => present,
+            ensure  => present,
             mode    => '0440',
             force   => false,
             owner   => $remctl::server::user,

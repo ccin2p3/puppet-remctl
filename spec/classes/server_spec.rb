@@ -373,7 +373,7 @@ describe 'remctl::server', :type => :class do
                     it 'should raise error' do
                         expect {
                             should compile.with_all_deps
-                        }.to raise_error(/"NaN" does not match/)
+                        }.to raise_error(/Expected.+to be an Integer/)
                     end
 
                 end # context with bad value
@@ -506,16 +506,16 @@ describe 'remctl::server', :type => :class do
                     
                     let :params do {
                         :manage_user    => true,
-                        :user           => 0,
-                        :group           => 0
+                        :user           => '0',
+                        :group           => '0'
                     } end
 
                     it 'should not have user' do
-                        should_not contain_user(0)
+                        should_not contain_user('0')
                     end
 
                     it 'should not have group' do
-                        should_not contain_group(0)
+                        should_not contain_group('0')
                     end
 
                 end # context 'with custom value zero'

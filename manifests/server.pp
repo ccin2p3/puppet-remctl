@@ -17,8 +17,8 @@ class remctl::server (
 
     $package_name       = $remctl::params::server_package_name,
 
-    $commands		= {},
-    $aclfiles		= {}
+    $commands           = {},
+    $aclfiles           = {}
 ) inherits ::remctl::params {
 
     require stdlib
@@ -32,7 +32,7 @@ class remctl::server (
     validate_bool($manage_user)
     validate_string($krb5_service)
     validate_string($krb5_keytab)
-    validate_re($port, '^\d+$')
+    validate_integer($port)
     validate_array($only_from)
     validate_array($no_access)
     validate_string($bind)
@@ -102,7 +102,7 @@ class remctl::server (
 
     if $manage_user {
 
-        if $group != 'root' and $group != 0 {
+        if $group != 'root' and $group != '0' {
             group { $group:
                 ensure      => $ensure,
             }
@@ -113,7 +113,7 @@ class remctl::server (
             $_user_require = undef
         }
 
-        if $user != 'root' and $user != 0 {
+        if $user != 'root' and $user != '0' {
             user { $user:
                 ensure      => $ensure,
                 comment     => 'remctl user',

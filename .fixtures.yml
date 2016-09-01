@@ -4,7 +4,7 @@ fixtures:
     # Currently, v1.1.0 is not supported by puppetlabs
     concat: 
         repo: "puppetlabs/concat"
-        ref : "1.0.4"
+        ref : "1.2.0"
   repositories:
     stdlib:
       repo: "https://github.com/puppetlabs/puppetlabs-stdlib.git"
@@ -12,8 +12,8 @@ fixtures:
       repo: "https://github.com/puppetlabs/puppetlabs-xinetd.git"
 #    concat:
 #      repo: "https://github.com/puppetlabs/puppetlabs-concat.git"
-    # Use latest version of rspec puppet for coverage
-    rspec-puppet:
-            repo: "https://github.com/rodjek/rspec-puppet.git"
+#    # Use latest version of rspec puppet for coverage
+#    rspec-puppet:
+#            repo: "https://github.com/rodjek/rspec-puppet.git"
   symlinks:
     remctl: "#{source_dir}"
