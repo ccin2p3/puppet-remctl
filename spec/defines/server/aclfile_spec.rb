@@ -70,7 +70,7 @@ describe 'remctl::server::aclfile', :type => :define do
                     it 'should raise error' do
                         expect {
                             should compile
-                        }.to raise_error(/\s+false does not match\s+/)
+                        }.to raise_error()
                     end
 
                 end # context with bad value

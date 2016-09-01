@@ -1,7 +1,7 @@
 #
 define remctl::server::aclfile (
     $ensure         = 'present',
-    $acldir         = $remctl::server::acldir,
+    $acldir         = undef,
     $acls           = []
 ) {
 
@@ -11,7 +11,9 @@ define remctl::server::aclfile (
 
     validate_re($ensure, '^(present|absent)$')
     validate_array($acls)
-    validate_absolute_path($acldir)
+
+    $_acldir = pick($acldir, $::remctl::server::acldir)
+    validate_absolute_path($_acldir)
 
     $_files_ensure = $ensure ? { 'present' => 'file', 'absent' => 'absent' }
 
@@ -22,7 +24,7 @@ define remctl::server::aclfile (
         $aclfile_ensure = 'absent'
     }
 
-    file { "${acldir}/${name}":
+    file { "${_acldir}/${name}":
         ensure      => $aclfile_ensure,
         owner       => $remctl::server::user,
         group       => $remctl::server::group,
