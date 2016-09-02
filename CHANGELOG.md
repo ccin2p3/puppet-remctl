@@ -1,3 +1,6 @@
+#### 2016-09-02 - Remi Ferrand <puppet@cc.in2p3.fr> - 2.2.2
+* Fix small puppet-lint issues
+
 #### 2016-09-02 - Remi Ferrand <puppet@cc.in2p3.fr> - 2.2.0
 * Add support for Puppet v4.
 * Requires at least puppetlabs/stdlib v4.6.0
