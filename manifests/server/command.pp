@@ -34,20 +34,20 @@ define remctl::server::command (
             # is compatible with all 1.x versions.
             # The easiest way to fix this without introducing backward compatibility
             # problems is to remove the *ensure* parameter from the Concat type for now.
-            ensure  => present,
-            mode    => '0440',
-            force   => false,
-            owner   => $remctl::server::user,
-            group   => $remctl::server::group,
-            warn    => true
+            ensure => present,
+            mode   => '0440',
+            force  => false,
+            owner  => $remctl::server::user,
+            group  => $remctl::server::group,
+            warn   => true
         }
 
     }
 
     concat::fragment { "${command}_${subcommand}":
-        ensure          => $ensure,
-        target          => $cmdfile,
-        content         => template('remctl/server/command.erb'),
+        ensure  => $ensure,
+        target  => $cmdfile,
+        content => template('remctl/server/command.erb')
     }
 }
 
