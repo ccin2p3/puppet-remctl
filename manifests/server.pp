@@ -115,55 +115,55 @@ class remctl::server (
 
         if $user != 'root' and $user != '0' {
             user { $user:
-                ensure      => $ensure,
-                comment     => 'remctl user',
-                gid         => $group,
-                require     => $_user_require,
-                notify      => Package[$package_name]
+                ensure  => $ensure,
+                comment => 'remctl user',
+                gid     => $group,
+                require => $_user_require,
+                notify  => Package[$package_name]
             }
         }
     }
 
     if ! defined(Package[$package_name]) {
         package { $package_name:
-            ensure      => $ensure,
-            before      => File[$remctl::params::basedir]
+            ensure => $ensure,
+            before => File[$remctl::params::basedir]
         }
     }
 
     file { $remctl::params::basedir:
-        ensure      => $_directories_ensure,
-        mode        => '0750',
-        owner       => $user,
-        group       => $group
+        ensure => $_directories_ensure,
+        mode   => '0750',
+        owner  => $user,
+        group  => $group
     }
 
     ->
 
     file { $remctl::params::confdir:
-        ensure      => $_directories_ensure,
-        mode        => '0750',
-        owner       => $user,
-        group       => $group
+        ensure => $_directories_ensure,
+        mode   => '0750',
+        owner  => $user,
+        group  => $group
     }
 
     ->
 
     file { $remctl::params::acldir:
-        ensure      => $_directories_ensure,
-        mode        => '0750',
-        owner       => $user,
-        group       => $group
+        ensure => $_directories_ensure,
+        mode   => '0750',
+        owner  => $user,
+        group  => $group
     }
 
     ->
 
     file { $remctl::params::conffile:
-        ensure      => $_files_ensure,
-        content     => template('remctl/remctl.conf'),
-        mode        => '0640',
-        owner       => $user,
-        group       => $group,
+        ensure  => $_files_ensure,
+        content => template('remctl/remctl.conf'),
+        mode    => '0640',
+        owner   => $user,
+        group   => $group
     }
 
     ->
@@ -174,31 +174,31 @@ class remctl::server (
     # - Do not register UDP service anymore as it's very unlikely that
     #   UDP will be used someday.
     augeas { 'remctl_etc_services':
-        context     => '/files/etc/services',
-        changes     => [
+        context => '/files/etc/services',
+        changes => [
             'defnode remctltcp service-name[.="remctl"][protocol = "tcp"] remctl',
             "set \$remctltcp/port ${remctl::params::port}",
             'set $remctltcp/protocol tcp',
             'set $remctltcp/#comment "remote authenticated command execution"',
-        ],
+        ]
     }
 
     ->
 
     xinetd::service { 'remctl':
-        ensure          => $ensure,
-        port            => $port, # Dupplicate with /etc/services info but xinetd::service requires it
-        service_type    => $_xinetd_service_type,
-        server          => $remctl::params::server_bin,
-        server_args     => "${_debug}${_krb5_keytab}${_krb5_service}${_conffile}",
-        disable         => $_disable,
-        protocol        => 'tcp',
-        socket_type     => 'stream',
-        user            => $user,
-        group           => $group,
-        only_from       => $_only_from,
-        no_access       => $_no_access,
-        bind            => $bind
+        ensure       => $ensure,
+        port         => $port, # Dupplicate with /etc/services info but xinetd::service requires it
+        service_type => $_xinetd_service_type,
+        server       => $remctl::params::server_bin,
+        server_args  => "${_debug}${_krb5_keytab}${_krb5_service}${_conffile}",
+        disable      => $_disable,
+        protocol     => 'tcp',
+        socket_type  => 'stream',
+        user         => $user,
+        group        => $group,
+        only_from    => $_only_from,
+        no_access    => $_no_access,
+        bind         => $bind
     }
 
     create_resources('::remctl::server::command', $commands, {})

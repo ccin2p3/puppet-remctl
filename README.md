@@ -1,5 +1,7 @@
 #remctl
 
+[![Puppet Forge](https://img.shields.io/puppetforge/v/ccin2p3/remctl.svg)](https://forge.puppet.com/ccin2p3/remctl)
+[![Puppet Forge Download](https://img.shields.io/puppetforge/dt/ccin2p3/remctl.svg)](https://forge.puppet.com/ccin2p3/remctl)
 [![Build Status](https://travis-ci.org/ccin2p3/puppet-remctl.svg?branch=master)](https://travis-ci.org/ccin2p3/puppet-remctl)
 
 ####Table of Contents

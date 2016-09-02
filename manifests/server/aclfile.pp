@@ -25,11 +25,11 @@ define remctl::server::aclfile (
     }
 
     file { "${_acldir}/${name}":
-        ensure      => $aclfile_ensure,
-        owner       => $remctl::server::user,
-        group       => $remctl::server::group,
-        mode        => '0440',
-        content     => template('remctl/server/aclfile.erb')
+        ensure  => $aclfile_ensure,
+        owner   => $remctl::server::user,
+        group   => $remctl::server::group,
+        mode    => '0440',
+        content => template('remctl/server/aclfile.erb')
     }
 }
 

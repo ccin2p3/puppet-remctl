@@ -1,6 +1,6 @@
 {
   "name": "ccin2p3-remctl",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "author": "IN2P3 Computing Centre",
   "summary": "CC-IN2P3 remctl module",
   "description": "Puppet module to configure and deploy remctl server, acl and command files",
@@ -8,6 +8,13 @@
   "source": "https://github.com/ccin2p3/puppet-remctl",
   "project_page": "https://github.com/ccin2p3/puppet-remctl",
   "issues_url": "https://github.com/ccin2p3/puppet-remctl/issues/new",
+  "tags": [
+    "remctl",
+    "remctld",
+    "gssapi",
+    "kerberos",
+    "ccin2p3"
+  ],
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
