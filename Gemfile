@@ -15,8 +15,15 @@ group :development, :test do
     gem 'puppetlabs_spec_helper',  :require => false
     gem 'puppet-lint',             :require => false
 
+    # Ruby version specificities
     gem 'simplecov', :platforms => [:ruby_19, :ruby_20, :ruby_21], :require => false
     gem 'coveralls', :platforms => [:ruby_19, :ruby_20, :ruby_21], :require => false
+    # Failures with ruby 1.8 and json_pure 2.x that requires ruby v2.x
+    gem 'json_pure', '~> 1.8', :platforms => [:ruby_18, :ruby_19], :require => false
+    # Failures with ruby 1.9 and json 2.x that requires ruby v2.x
+    gem 'json', '~> 1.8', :platforms => [:ruby_19], :require => false
+    # Failures with ruby 1.9 and tins 1.12.x that requires ruby v2.x
+    gem 'tins', '1.6.0', :platforms => [:ruby_19], :require => false
 end
 
 if facterversion = ENV['FACTER_GEM_VERSION']
