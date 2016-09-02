@@ -34,7 +34,7 @@ define remctl::server::command (
             # is compatible with all 1.x versions.
             # The easiest way to fix this without introducing backward compatibility
             # problems is to remove the *ensure* parameter from the Concat type for now.
-            #ensure  => present,
+            ensure  => present,
             mode    => '0440',
             force   => false,
             owner   => $remctl::server::user,
@@ -42,18 +42,11 @@ define remctl::server::command (
             warn    => true
         }
 
-        concat::fragment { "${command}_puppet_header":
-            ensure          => present,
-            target          => $cmdfile,
-            order           => '01',
-            content         => "# This file is being maintained by Puppet.\n# DO NOT EDIT\n"
-        }
     }
 
     concat::fragment { "${command}_${subcommand}":
         ensure          => $ensure,
         target          => $cmdfile,
-        order           => '02',
         content         => template('remctl/server/command.erb'),
     }
 }

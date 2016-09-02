@@ -80,6 +80,7 @@ To install remctl server
         disable         => false
     } 
 ```
+
 To create an ACL file
 
 ```puppet
@@ -128,6 +129,32 @@ To create multiple subcommands
         },
         acls            => ['princ:admin@EXAMPLE.ORG']
     }
+```
+
+To use with hiera, write in your puppet manifest
+
+```
+include ::remctl::server
+```
+
+and in your hiera file
+
+```yaml
+---
+remctl::server::ensure: present
+remctl::server::disable: false
+remctl::server::only_from:
+  - '0.0.0.0'
+remctl::server::commands:
+  'kadmin_lock':
+    command     : 'kadmin'
+    subcommand  : 'lock_user'
+    executable  : '/usr/sbin/kadmin'
+    options     :
+      'help'    : '--help'
+      'summary' : '--summary'
+    acls        :
+      - 'princ:admin@EXAMPLE.ORG'
 ```
 
 ##Usage
@@ -219,6 +246,14 @@ List of remote hosts that are not allowed to access remctl service (see `xinetd.
 #####`bind`
 
 Allows a service to be bound to a specific interface on the machine (see `xinetd.conf(5)` `bind` or `interface` option for format). Defaults to `undef`.
+
+##### `commands`
+
+List of [remctl::server::command](#defined-type-remctlservercommand) that will be passed to `create_resources()`.
+
+##### `aclfiles`
+
+List of [remctl::server::aclfile](#defined-type-remctlserveraclfile) that will be passed to `create_resources()`.
 
 ####Defined Type: `remctl::server::aclfile`
 
@@ -312,3 +347,9 @@ Array of acls as desribed in `remctld(8)` `acl` section.
 This module currently only works on `RedHat` and `Debian` os families and expects that the `remctl*` packages are available with your current repository configuration.
 
 All xinetd options were not exposed through the `remctl::server` class. If you need a specific xinetd option, please file a bug report and we'll add it.
+
+## Contributing
+
+Found a bug or simply have a new idea / new feature ? External contributions are welcome.
+
+Please read the [contribution guide](CONTRIBUTING.md) to see how to contribute.

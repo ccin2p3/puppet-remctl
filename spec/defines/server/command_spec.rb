@@ -58,9 +58,12 @@ describe 'remctl::server::command', :type => :define do
             end
 
             let :facts do {
-                :osfamily               => specs[:osfamily],
-                :operatingsystem        => specs[:operatingsystem],
-                :concat_basedir         => specs[:concat_basedir]
+                :osfamily        => specs[:osfamily],
+                :operatingsystem => specs[:operatingsystem],
+                :concat_basedir  => specs[:concat_basedir],
+                :id              => 'riton', # used by puppetlabs-concat
+                :is_pe           => false, # used by puppetlabs-concat
+                :path            => '/usr/bin:/sbin:/bin', # used by puppetlabs-concat
             } end
 
             describe '#command / #subcommand / #executable / #options / #acls' do
@@ -104,8 +107,7 @@ describe 'remctl::server::command', :type => :define do
 
                     it 'should have concat object' do
                         should contain_concat("#{confdir}/kadmin").with({
-                            # Note(remi): remove ensure parameter to be compliant with puppetlabs-concat 1.0.4
-                            #:ensure     => 'present',
+                            :ensure     => 'present',
                             :warn       => true,
                             :mode       => default_file_mode,
                             :owner      => default_user,
@@ -117,7 +119,6 @@ describe 'remctl::server::command', :type => :define do
                         should contain_concat__fragment('kadmin_change_pw').with({
                             :ensure         => 'present',
                             :target         => "#{confdir}/kadmin",
-                            :order          => '02',
                             :content        => %r'^kadmin\s+change_pw\s+\\\n/usr/kerberos/sbin/kadmin\s+\\\n^princ:goodguy@IN2P3.FR\s+unixgroup:goodguys$'m
                         })
                     end
@@ -161,9 +162,10 @@ describe 'remctl::server::command', :type => :define do
                     } end
 
                     it 'should raise error' do
+
                         expect {
                             should compile
-                        }.to raise_error(/\s+false does not match\s+/)
+                        }.to raise_error()
                     end
 
                 end # context with bad value
