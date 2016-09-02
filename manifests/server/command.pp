@@ -42,18 +42,11 @@ define remctl::server::command (
             warn    => true
         }
 
-        concat::fragment { "${command}_puppet_header":
-            ensure          => present,
-            target          => $cmdfile,
-            order           => '01',
-            content         => "# This file is being maintained by Puppet.\n# DO NOT EDIT\n"
-        }
     }
 
     concat::fragment { "${command}_${subcommand}":
         ensure          => $ensure,
         target          => $cmdfile,
-        order           => '02',
         content         => template('remctl/server/command.erb'),
     }
 }
