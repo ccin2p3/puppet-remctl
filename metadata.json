@@ -1,6 +1,6 @@
 {
   "name": "ccin2p3-remctl",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "author": "IN2P3 Computing Centre",
   "summary": "CC-IN2P3 remctl module",
   "description": "Puppet module to configure and deploy remctl server, acl and command files",
@@ -69,6 +69,12 @@
         "12.04",
         "14.04"
       ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.10.0 < 7.0.0"
     }
   ]
 }
