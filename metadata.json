@@ -1,20 +1,5 @@
 {
-  "name": "ccin2p3-remctl",
-  "version": "2.2.3",
   "author": "IN2P3 Computing Centre",
-  "summary": "CC-IN2P3 remctl module",
-  "description": "Puppet module to configure and deploy remctl server, acl and command files",
-  "license": "CeCILL",
-  "source": "https://github.com/ccin2p3/puppet-remctl",
-  "project_page": "https://github.com/ccin2p3/puppet-remctl",
-  "issues_url": "https://github.com/ccin2p3/puppet-remctl/issues/new",
-  "tags": [
-    "remctl",
-    "remctld",
-    "gssapi",
-    "kerberos",
-    "ccin2p3"
-  ],
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
@@ -22,13 +7,17 @@
     },
     {
       "name": "puppetlabs/concat",
-      "version_requirement": ">= 1.1.0 < 2.0.0"
+      "version_requirement": ">= 1.1.0 < 8.0.0"
     },
     {
       "name": "puppetlabs/xinetd",
       "version_requirement": ">= 2.0.0 < 3.0.0"
     }
   ],
+  "description": "Puppet module to configure and deploy remctl server, acl and command files",
+  "issues_url": "https://github.com/ccin2p3/puppet-remctl/issues/new",
+  "license": "CeCILL",
+  "name": "ccin2p3-remctl",
   "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",
@@ -71,10 +60,21 @@
       ]
     }
   ],
+  "project_page": "https://github.com/ccin2p3/puppet-remctl",
   "requirements": [
     {
       "name": "puppet",
       "version_requirement": ">= 4.10.0 < 7.0.0"
     }
-  ]
+  ],
+  "source": "https://github.com/ccin2p3/puppet-remctl",
+  "summary": "CC-IN2P3 remctl module",
+  "tags": [
+    "remctl",
+    "remctld",
+    "gssapi",
+    "kerberos",
+    "ccin2p3"
+  ],
+  "version": "2.3.0-pre1"
 }
