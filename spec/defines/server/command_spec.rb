@@ -117,7 +117,6 @@ describe 'remctl::server::command', :type => :define do
 
                     it do
                         should contain_concat__fragment('kadmin_change_pw').with({
-                            :ensure         => 'present',
                             :target         => "#{confdir}/kadmin",
                             :content        => %r'^kadmin\s+change_pw\s+\\\n/usr/kerberos/sbin/kadmin\s+\\\n^princ:goodguy@IN2P3.FR\s+unixgroup:goodguys$'m
                         })
@@ -140,7 +139,6 @@ describe 'remctl::server::command', :type => :define do
 
                     it 'should have correct options sorted' do
                         should contain_concat__fragment('kadmin_change_pw').with({
-                            :ensure         => 'present',
                             :target         => "#{confdir}/kadmin",
                             :content    => %r'^/usr/kerberos/sbin/kadmin\s+\\\nhelp=-h\s+\\\nuser=nobody\s+\\\n^unixgroup:goodguys$'m
                         })
@@ -186,7 +184,7 @@ describe 'remctl::server::command', :type => :define do
                     end
 
                     it do
-                        should contain_concat__fragment('kadmin_change_pw').with_ensure('present')
+                        should contain_concat__fragment('kadmin_change_pw')
                     end
 
                 end # context with ensure present
@@ -205,7 +203,7 @@ describe 'remctl::server::command', :type => :define do
                     end
 
                     it do
-                        should contain_concat__fragment('kadmin_change_pw').with_ensure('absent')
+                        should_not contain_concat__fragment('kadmin_change_pw')
                     end
 
                 end # context with ensure absent
@@ -244,8 +242,8 @@ describe 'remctl::server::command', :type => :define do
                 end
 
                 it 'should have all fragments' do
-                    should contain_concat__fragment('kadmin_other').with_ensure('absent')
-                    should contain_concat__fragment('kadmin_change_pw').with_ensure('present')
+                    should_not contain_concat__fragment('kadmin_other')
+                    should contain_concat__fragment('kadmin_change_pw')
                 end
 
             end # describe with another remctl::server::command defined type
