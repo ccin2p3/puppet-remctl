@@ -44,10 +44,11 @@ define remctl::server::command (
 
     }
 
-    concat::fragment { "${command}_${subcommand}":
-        ensure  => $ensure,
-        target  => $cmdfile,
-        content => template('remctl/server/command.erb')
+    if $ensure == 'present' {
+        concat::fragment { "${command}_${subcommand}":
+            target  => $cmdfile,
+            content => template('remctl/server/command.erb')
+        }
     }
 }
 
