@@ -14,6 +14,8 @@ class remctl::server (
     $only_from          = [ '0.0.0.0' ],
     $no_access          = [],
     $bind               = undef,
+    $cps_count          = $remctl::params::cps_count,
+    $cps_delay          = $remctl::params::cps_delay,
 
     $package_name       = $remctl::params::server_package_name,
 
@@ -37,6 +39,8 @@ class remctl::server (
     validate_array($no_access)
     validate_string($bind)
     validate_string($package_name)
+    validate_integer($cps_count)
+    validate_integer($cps_delay)
 
     #
     # Computed values
@@ -124,6 +128,12 @@ class remctl::server (
         }
     }
 
+    if $cps_count == $remctl::params::cps_count and $cps_delay == $remctl::params::cps_delay {
+        $cps = undef
+    } else {
+        $cps = "${cps_count} ${cps_delay}"
+    }
+
     if ! defined(Package[$package_name]) {
         package { $package_name:
             ensure => $ensure,
@@ -198,7 +208,8 @@ class remctl::server (
         group        => $group,
         only_from    => $_only_from,
         no_access    => $_no_access,
-        bind         => $bind
+        bind         => $bind,
+        cps          => $cps,
     }
 
     create_resources('::remctl::server::command', $commands, {})
