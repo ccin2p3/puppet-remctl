@@ -4,6 +4,8 @@ class remctl::params {
     $debug                      = false
     $port                       = 4373
     $disable                    = true
+    $cps_count                  = 50
+    $cps_delay                  = 10
 
     case $::osfamily {
         'RedHat': {
