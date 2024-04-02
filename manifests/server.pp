@@ -2,218 +2,153 @@
 # remctl server class
 #
 class remctl::server (
-    $ensure             = 'present',
-    $debug              = $remctl::params::debug,
-    $disable            = $remctl::params::disable,
-    $krb5_service       = 'undef',
-    $krb5_keytab        = $remctl::params::krb5_keytab,
-    $port               = $remctl::params::port,
-    $user               = 'root',
-    $group              = 'root',
-    $manage_user        = false,
-    $only_from          = [ '0.0.0.0' ],
-    $no_access          = [],
-    $bind               = undef,
-    $cps_count          = $remctl::params::cps_count,
-    $cps_delay          = $remctl::params::cps_delay,
+  String $package_name,
+  Enum['systemd_socket', 'xinetd'] $deployment_flavor,
+  Stdlib::Port $port,
+  Enum['present', 'absent'] $ensure,
+  Boolean $debug,
+  Boolean $alter_etc_services,
+  Stdlib::Absolutepath $krb5_keytab,
+  Stdlib::Absolutepath $server_bin,
+  Stdlib::Absolutepath $basedir,
+  String $user,
+  String $group,
+  Boolean $manage_user,
+  Optional[String] $krb5_service = undef,
+  Hash $commands = {},
+  Hash $aclfiles = {}
+) inherits ::remctl {
 
-    $package_name       = $remctl::params::server_package_name,
+  $default_port = 4373
 
-    $commands           = {},
-    $aclfiles           = {}
-) inherits ::remctl::params {
+  #
+  # Computed values
+  #
+  $_directories_ensure = $ensure ? { 'present' => 'directory', 'absent' => 'absent' }
+  $_files_ensure = $ensure ? { 'present' => 'file', 'absent' => 'absent' }
+  $deployment_klass = "remctl::server::${deployment_flavor}"
 
-    require stdlib
-    include xinetd
+  $confdir = "${basedir}/conf.d"
+  $conffile = "${basedir}/remctl.conf"
+  $acldir = "${basedir}/acl"
 
-    validate_string($ensure)
-    validate_string($user)
-    validate_string($group)
-    validate_bool($debug)
-    validate_bool($disable)
-    validate_bool($manage_user)
-    validate_string($krb5_service)
-    validate_string($krb5_keytab)
-    validate_integer($port)
-    validate_array($only_from)
-    validate_array($no_access)
-    validate_string($bind)
-    validate_string($package_name)
-    validate_integer($cps_count)
-    validate_integer($cps_delay)
+  if ($debug) {
+    $_debug = '-d'
+  }
+  else {
+    $_debug = undef
+  }
 
-    #
-    # Computed values
-    #
-    $_directories_ensure = $ensure ? { 'present' => 'directory', 'absent' => 'absent' }
-    $_files_ensure = $ensure ? { 'present' => 'file', 'absent' => 'absent' }
+  if ($krb5_service == undef) {
+    $_krb5_service = undef
+  }
+  else {
+    $_krb5_service = "-s ${krb5_service}"
+  }
 
-    if ($port == $remctl::params::port) {
-        $_xinetd_service_type = undef
+  $_conffile = "-f ${conffile}"
+
+  if ($krb5_keytab == undef) {
+    $_krb5_keytab = undef
+  }
+  else {
+    $_krb5_keytab = "-k ${krb5_keytab}"
+  }
+
+  if ($manage_user == true) {
+
+    if ($group != 'root' and $group != '0') {
+      group { $group:
+        ensure => $ensure,
+      }
+
+      $_user_require = [Group[$group]]
+
+      Group[$group] -> Class[$deployment_klass]
     }
     else {
-        $_xinetd_service_type = 'UNLISTED'
+      $_user_require = undef
     }
 
-    if $debug {
-        $_debug = '-d '
-    }
-    else {
-        $_debug = ''
-    }
+    if ($user != 'root' and $user != '0') {
+      user { $user:
+        ensure  => $ensure,
+        comment => 'remctl user',
+        gid     => $group,
+        require => $_user_require,
+        notify  => Package[$package_name],
+      }
 
-    if $krb5_service != 'undef' {
-        $_krb5_service = "-s ${krb5_service} "
+      User[$group] -> Class[$deployment_klass]
     }
-    else {
-        $_krb5_service = ''
+  }
+
+  if (! defined(Package[$package_name])) {
+    package { $package_name:
+      ensure => $ensure,
+      before => File[$basedir],
     }
+  }
 
-    if $remctl::params::conffile {
-        $_conffile = "-f ${remctl::params::conffile} "
-    }
-    else {
-        $_conffile = ''
-    }
+  file { $basedir:
+    ensure => $_directories_ensure,
+    mode   => '0750',
+    owner  => $user,
+    group  => $group
+  }
 
-    if $krb5_keytab {
-        $_krb5_keytab = "-k ${krb5_keytab} "
-    }
-    else {
-        $_krb5_keytab = ''
-    }
+  -> file { $confdir:
+    ensure => $_directories_ensure,
+    mode   => '0750',
+    owner  => $user,
+    group  => $group
+  }
 
-    if $only_from {
-        $_only_from = join($only_from, ' ')
-    }
-    else {
-        $_only_from = undef
-    }
+  -> file { $acldir:
+    ensure => $_directories_ensure,
+    mode   => '0750',
+    owner  => $user,
+    group  => $group
+  }
 
-    if size($no_access) > 0 {
-        $_no_access = join($no_access, ' ')
-    }
-    else {
-        $_no_access = undef
-    }
+  -> file { $conffile:
+    ensure  => $_files_ensure,
+    content => template('remctl/remctl.conf'),
+    mode    => '0640',
+    owner   => $user,
+    group   => $group,
+  }
 
-    if $disable {
-        $_disable = 'yes'
-    }
-    else {
-        $_disable = 'no'
-    }
-
-    if $manage_user {
-
-        if $group != 'root' and $group != '0' {
-            group { $group:
-                ensure      => $ensure,
-            }
-
-            $_user_require = [ Group[$group] ]
-        }
-        else {
-            $_user_require = undef
-        }
-
-        if $user != 'root' and $user != '0' {
-            user { $user:
-                ensure  => $ensure,
-                comment => 'remctl user',
-                gid     => $group,
-                require => $_user_require,
-                notify  => Package[$package_name]
-            }
-        }
-    }
-
-    if $cps_count == $remctl::params::cps_count and $cps_delay == $remctl::params::cps_delay {
-        $cps = undef
-    } else {
-        $cps = "${cps_count} ${cps_delay}"
-    }
-
-    if ! defined(Package[$package_name]) {
-        package { $package_name:
-            ensure => $ensure,
-            before => File[$remctl::params::basedir]
-        }
-    }
-
-    file { $remctl::params::basedir:
-        ensure => $_directories_ensure,
-        mode   => '0750',
-        owner  => $user,
-        group  => $group
-    }
-
-    ->
-
-    file { $remctl::params::confdir:
-        ensure => $_directories_ensure,
-        mode   => '0750',
-        owner  => $user,
-        group  => $group
-    }
-
-    ->
-
-    file { $remctl::params::acldir:
-        ensure => $_directories_ensure,
-        mode   => '0750',
-        owner  => $user,
-        group  => $group
-    }
-
-    ->
-
-    file { $remctl::params::conffile:
-        ensure  => $_files_ensure,
-        content => template('remctl/remctl.conf'),
-        mode    => '0640',
-        owner   => $user,
-        group   => $group
-    }
-
-    ->
-
+  if ($alter_etc_services == true) {
     # Note(remi):
     # As suggested by Russ A.:
     # - Only update /etc/services if official remctl port was used.
     # - Do not register UDP service anymore as it's very unlikely that
     #   UDP will be used someday.
     augeas { 'remctl_etc_services':
-        context => '/files/etc/services',
-        changes => [
-            'defnode remctltcp service-name[.="remctl"][protocol = "tcp"] remctl',
-            "set \$remctltcp/port ${remctl::params::port}",
-            'set $remctltcp/protocol tcp',
-            'set $remctltcp/#comment "remote authenticated command execution"',
-        ]
+      context => '/files/etc/services',
+      changes => [
+        'defnode remctltcp service-name[.="remctl"][protocol = "tcp"] remctl',
+        "set \$remctltcp/port ${default_port}",
+        'set $remctltcp/protocol tcp',
+        'set $remctltcp/#comment "remote authenticated command execution"',
+      ],
     }
+  }
 
-    ->
+  $base_args = [
+    $_debug,
+    $_krb5_keytab,
+    $_krb5_service,
+    $_conffile,
+  ]
 
-    xinetd::service { 'remctl':
-        ensure       => $ensure,
-        port         => $port, # Dupplicate with /etc/services info but xinetd::service requires it
-        service_type => $_xinetd_service_type,
-        server       => $remctl::params::server_bin,
-        server_args  => "${_debug}${_krb5_keytab}${_krb5_service}${_conffile}",
-        disable      => $_disable,
-        protocol     => 'tcp',
-        socket_type  => 'stream',
-        user         => $user,
-        group        => $group,
-        only_from    => $_only_from,
-        no_access    => $_no_access,
-        bind         => $bind,
-        cps          => $cps,
-    }
+  $common_args = $base_args.filter |$val| { $val =~ NotUndef }
 
-    create_resources('::remctl::server::command', $commands, {})
-    create_resources('::remctl::server::aclfile', $aclfiles, {})
+  class { $deployment_klass:
+    require => File[$conffile],
+  }
+
+  create_resources('::remctl::server::command', $commands, {})
+  create_resources('::remctl::server::aclfile', $aclfiles, {})
 }
-
-# vim: tabstop=4 shiftwidth=4 softtabstop=4

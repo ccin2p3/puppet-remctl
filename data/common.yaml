@@ -1,0 +1,12 @@
+---
+remctl::server::krb5_keytab: '/etc/krb5.keytab'
+remctl::server::server_bin: '/usr/sbin/remctld'
+remctl::server::basedir: '/etc/remctl'
+remctl::server::debug: false
+remctl::server::port: 4373
+remctl::server::deployment_flavor: 'systemd_socket'
+remctl::server::user: 'root'
+remctl::server::group: 'root'
+remctl::server::manage_user: true
+remctl::server::alter_etc_services: true
+remctl::server::ensure: 'present'
