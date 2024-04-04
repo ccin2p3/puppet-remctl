@@ -3,7 +3,7 @@
   "version": "2.4.0",
   "author": "IN2P3 Computing Centre",
   "summary": "CC-IN2P3 remctl module",
-  "license": "CeCILL",
+  "license": "CECILL-2.1",
   "source": "https://github.com/ccin2p3/puppet-remctl",
   "project_page": "https://github.com/ccin2p3/puppet-remctl",
   "issues_url": "https://github.com/ccin2p3/puppet-remctl/issues/new",
