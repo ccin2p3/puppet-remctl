@@ -1,3 +1,9 @@
+#### 2024-07-31 - Remi Ferrand <puppet@cc.in2p3.fr> - 3.1.0
+
+##### Changes
+
+* Adapt metadata to only support Puppet >= 7
+
 #### 2024-07-31 - Remi Ferrand <puppet@cc.in2p3.fr> - 3.0.0
 
 ##### Changes
