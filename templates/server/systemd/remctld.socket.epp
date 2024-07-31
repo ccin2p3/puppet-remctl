@@ -1,0 +1,21 @@
+#
+# WARNING: Deployed by Puppet: DO NOT EDIT
+#
+# Socket configuration for remctld service.  -*- conf -*-
+
+[Unit]
+Description=remctld listening socket
+Documentation=man:remctld(8)
+Documentation=https://www.eyrie.org/~eagle/software/remctl/
+
+[Socket]
+ListenStream=<%= $remctl::server::port %>
+<% if ($remctl::server::systemd_socket::trigger_limit_interval != undef) { -%>
+TriggerLimitIntervalSec=<%= $remctl::server::systemd_socket::trigger_limit_interval %>
+<% } -%>
+<% if ($remctl::server::systemd_socket::trigger_limit_burst != undef) { -%>
+TriggerLimitBurst=<%= $remctl::server::systemd_socket::trigger_limit_burst %>
+<% } -%>
+
+[Install]
+WantedBy=sockets.target

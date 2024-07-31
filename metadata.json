@@ -1,9 +1,16 @@
 {
+  "name": "ccin2p3-remctl",
+  "version": "2.4.0",
   "author": "IN2P3 Computing Centre",
+  "summary": "CC-IN2P3 remctl module",
+  "license": "CECILL-2.1",
+  "source": "https://github.com/ccin2p3/puppet-remctl",
+  "project_page": "https://github.com/ccin2p3/puppet-remctl",
+  "issues_url": "https://github.com/ccin2p3/puppet-remctl/issues/new",
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 4.6.0 < 5.0.0"
+      "version_requirement": ">= 5.0.0 < 9.0.0"
     },
     {
       "name": "puppetlabs/concat",
@@ -11,64 +18,57 @@
     },
     {
       "name": "puppetlabs/xinetd",
-      "version_requirement": ">= 2.0.0 < 3.0.0"
+      "version_requirement": ">= 2.0.0 < 4.0.0"
+    },
+    {
+      "name": "puppet/systemd",
+      "version_requirement": ">= 3.0.0 < 4.0.0"
     }
   ],
-  "description": "Puppet module to configure and deploy remctl server, acl and command files",
-  "issues_url": "https://github.com/ccin2p3/puppet-remctl/issues/new",
-  "license": "CeCILL",
-  "name": "ccin2p3-remctl",
   "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "5",
-        "6",
-        "7"
+        "7",
+        "8",
+        "9"
       ]
     },
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
-        "5",
-        "6",
-        "7"
-      ]
-    },
-    {
-      "operatingsystem": "Scientific",
-      "operatingsystemrelease": [
-        "5",
-        "6",
-        "7"
-      ]
-    },
-    {
-      "operatingsystem": "Debian",
-      "operatingsystemrelease": [
-        "6",
         "7",
         "8"
       ]
     },
     {
+      "operatingsystem": "Scientific",
+      "operatingsystemrelease": [
+        "7",
+        "8"
+      ]
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "11",
+        "12"
+      ]
+    },
+    {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
-        "10.04",
-        "12.04",
-        "14.04"
+        "22.04"
       ]
     }
   ],
-  "project_page": "https://github.com/ccin2p3/puppet-remctl",
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 4.10.0 < 8.0.0"
+      "version_requirement": ">= 7.10.0 < 9.0.0"
     }
   ],
-  "source": "https://github.com/ccin2p3/puppet-remctl",
-  "summary": "CC-IN2P3 remctl module",
+  "description": "Puppet module to configure and deploy remctl server, acl and command files",
   "tags": [
     "remctl",
     "remctld",
@@ -76,5 +76,7 @@
     "kerberos",
     "ccin2p3"
   ],
-  "version": "2.4.0"
+  "pdk-version": "3.0.1",
+  "template-url": "pdk-default#3.0.1",
+  "template-ref": "tags/3.0.1-0-gd13288a"
 }
