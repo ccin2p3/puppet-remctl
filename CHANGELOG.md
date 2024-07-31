@@ -1,3 +1,10 @@
+#### 2024-07-31 - Remi Ferrand <puppet@cc.in2p3.fr> - 3.0.0
+
+##### Changes
+
+* Use _data types_ everywhere
+* Add support for `systemd` as a deployment flavor (_EL 9_ systems have dropped `xinetd`)
+
 #### 2016-09-02 - Remi Ferrand <puppet@cc.in2p3.fr> - 2.2.2
 * Fix small puppet-lint issues
 
