@@ -1,19 +1,18 @@
+---
 fixtures:
   forge_modules:
-    # Use forge version of puppetlabs-concat that is supported by puppetlabs
-    # Currently, v1.1.0 is not supported by puppetlabs
     concat: 
         repo: "puppetlabs/concat"
-        ref : "1.2.0"
-  repositories:
-    stdlib:
-      repo: "https://github.com/puppetlabs/puppetlabs-stdlib.git"
-    xinetd:
-      repo: "https://github.com/puppetlabs/puppetlabs-xinetd.git"
-#    concat:
-#      repo: "https://github.com/puppetlabs/puppetlabs-concat.git"
-#    # Use latest version of rspec puppet for coverage
-#    rspec-puppet:
-#            repo: "https://github.com/rodjek/rspec-puppet.git"
+        ref : "7.1.1"
+    stdlib: 
+        repo: "puppetlabs/stdlib"
+        ref : "8.5.0"
+    xinetd: 
+        repo: "puppetlabs/xinetd"
+        ref : "3.3.0"
+    systemd:
+        repo: "puppet/systemd"
+        ref: "3.10.0"
+  repositories: {}
   symlinks:
     remctl: "#{source_dir}"

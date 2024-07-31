@@ -1,0 +1,27 @@
+#
+# WARNING: Deployed by Puppet: DO NOT EDIT
+#
+# systemd configuration for remctld.  -*- conf -*-
+
+[Unit]
+Description=remote authenticated command execution with ACLs
+Documentation=man:remctld(8)
+Documentation=https://www.eyrie.org/~eagle/software/remctld/
+Requires=<%= $remctl::server::systemd_socket::service_name %>.socket
+
+[Service]
+Type=simple
+NotifyAccess=main
+Restart=always
+ExecStart=<%= $remctl::server::server_bin %> -F -m <%= $remctl::server::common_args.join(' ') %>
+ExecReload=kill -HUP $MAINPID
+<% if ($remctl::server::user != 'root' and $remctl::server::user != '0') { -%>
+User=<%= $remctl::server::user %>
+<% } -%>
+<% if ($remctl::server::group != 'root' and $remctl::server::group != '0') { -%>
+Group=<%= $remctl::server::group %>
+<% } -%>
+
+[Install]
+Also=<%= $remctl::server::systemd_socket::service_name %>.socket
+WantedBy=multi-user.target

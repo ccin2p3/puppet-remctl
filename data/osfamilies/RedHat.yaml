@@ -1,0 +1,4 @@
+---
+remctl::server::package_name: 'remctl'
+remctl::client::package_name: 'remctl'
+remctl::server::systemd_socket::service_name: 'remctld'
