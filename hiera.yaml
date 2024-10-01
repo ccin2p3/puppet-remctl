@@ -6,7 +6,7 @@ defaults:
 
 hierarchy:
   - name: 'By OSFamily Maj Version'
-    path: "osfamilies/%{facts.os.family}/%{facts.release.major}.yaml"
+    path: "osfamilies/%{facts.os.family}/%{facts.os.release.major}.yaml"
 
   - name: 'By OSFamily'
     path: 'osfamilies/%{facts.os.family}.yaml'
